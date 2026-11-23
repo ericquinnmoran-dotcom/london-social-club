@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>London Social Club</title>
+<meta name="description" content="London Social Club in London, Ontario. RSVP for the Opening Gala and see the supper clubs, workshops, listening nights and runs coming soon.">
+<meta property="og:title" content="London Social Club">
+<meta property="og:description" content="RSVP for the Opening Gala. Location to be determined.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1f5a43">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%231f5a43'/%3E%3Ctext x='20' y='24.5' text-anchor='middle' font-family='Arial,sans-serif' font-size='12' font-weight='700' fill='%23f3f6f2'%3ELSC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a new club's front page. The Opening Gala is the one live thing (RSVP);
+   everything else is a "coming soon" programme of drawn covers, no photos. */
+:root {
+  --bg: #eceee9;
+  --surface: #f7f8f5;
+  --surface-2: #e1e5de;
+  --fg: #16211b;
+  --muted: #59655d;
+  --line: #ccd3c9;
+  --accent: #1f5a43;
+  --accent-ink: #f3f6f2;
+  --accent-soft: #d6e4dc;
+  --brass: #94692a;
+  --ok: #2b7a4c;
+  --bad: #a3392d;
+  --shadow: 0 1px 2px rgba(22, 33, 27, .06), 0 8px 24px rgba(22, 33, 27, .07);
+
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Instrument Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1412;
+    --surface: #151d19;
+    --surface-2: #1c2621;
+    --fg: #e7ebe5;
+    --muted: #94a199;
+    --line: #29352f;
+    --accent: #84c6a6;
+    --accent-ink: #0e1412;
+    --accent-soft: #1d3329;
+    --brass: #d3a95f;
+    --ok: #74cf98;
+    --bad: #f08a7d;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1412;
+  --surface: #151d19;
+  --surface-2: #1c2621;
+  --fg: #e7ebe5;
+  --muted: #94a199;
+  --line: #29352f;
+  --accent: #84c6a6;
+  --accent-ink: #0e1412;
+  --accent-soft: #1d3329;
+  --brass: #d3a95f;
+  --ok: #74cf98;
+  --bad: #f08a7d;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg);
+}
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: 13.5px; }
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- header ---------- */
+.site-head {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.2) blur(10px); -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site-head .wrap { display: flex; align-items: center; gap: 20px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-right: auto; }
+.brand svg { width: 34px; height: 34px; flex: none; }
+.brand b { font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; white-space: nowrap; }
+.brand span { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); line-height: 1.2; }
+.nav { display: flex; gap: 4px; }
+.nav a {
+  position: relative; white-space: nowrap; text-decoration: none; font-size: 14.5px; padding: 8px 12px; border-radius: var(--r-sm); color: var(--muted);
+  transition: color .2s var(--ease), background .2s var(--ease);
+}
+.nav a:hover { color: var(--fg); background: var(--surface-2); }
+.nav a[aria-current="page"] { color: var(--fg); }
+.nav a[aria-current="page"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 3px; height: 2px; border-radius: 2px; background: var(--accent); }
+.nav .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-left: 6px; vertical-align: 2px; }
+
+main { min-height: 60vh; }
+.view { animation: viewIn .32s var(--ease) both; }
+@keyframes viewIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: var(--r-sm);
+  padding: 11px 18px; font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none;
+  transition: transform .18s var(--ease), background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.btn svg { width: 16px; height: 16px; transition: transform .2s var(--ease); }
+.btn:hover svg.arrow { transform: translateX(3px); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: .55; cursor: progress; transform: none; box-shadow: none; }
+.btn-ghost { background: transparent; border-color: var(--line); color: var(--fg); }
+.btn-ghost:hover { border-color: var(--fg); }
+.btn-block { width: 100%; }
+
+/* ---------- home ---------- */
+.intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: center; padding-block: 56px 48px; }
+.intro h1 { font-size: clamp(28px, 3.2vw, 40px); line-height: 1.12; margin-top: 12px; }
+.intro p.lead { margin-top: 16px; font-size: 17.5px; color: var(--muted); max-width: 52ch; }
+.intro .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+.stub {
+  position: relative; display: grid; grid-template-columns: 150px minmax(0, 1fr); background: var(--surface); border-radius: var(--r-lg);
+  box-shadow: var(--shadow); text-decoration: none; overflow: hidden; transform: rotate(-1.2deg); transition: transform .35s var(--ease);
+}
+.stub:hover { transform: rotate(0deg) translateY(-3px); }
+.stub .art svg { display: block; width: 100%; height: 100%; }
+.stub .body { padding: 24px 22px 20px 28px; position: relative; display: grid; gap: 10px; }
+.stub .body::before {
+  content: ""; position: absolute; left: -9px; top: 0; bottom: 0; width: 18px;
+  background: radial-gradient(circle at 9px 9px, var(--bg) 6px, transparent 6.5px) 0 0 / 18px 18px repeat-y;
+}
+.stub h2 { font-size: 24px; line-height: 1.2; }
+.stub .facts-mini { display: grid; gap: 2px; font-size: 14.5px; color: var(--muted); }
+.stub .foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.stub .go { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 600; font-size: 14.5px; }
+.stub .go svg { width: 16px; height: 16px; transition: transform .2s var(--ease); }
+.stub:hover .go svg { transform: translateX(3px); }
+
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; font-family: var(--font-body); letter-spacing: 0; text-transform: none; }
+.status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.status.open { color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, transparent); }
+.status.soon { color: var(--brass); background: color-mix(in srgb, var(--brass) 13%, transparent); }
+
+.programme { padding-block: 8px 72px; }
+.prog-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.prog-head h2 { font-size: 24px; }
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding-top: 24px; }
+.card {
+  display: grid; grid-template-rows: auto 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+  overflow: hidden; text-decoration: none; transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+}
+.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: transparent; }
+.card .art { aspect-ratio: 16 / 9; overflow: hidden; }
+.card .art svg { display: block; width: 100%; height: 100%; transition: transform .6s var(--ease); }
+.card:hover .art svg { transform: scale(1.05); }
+.card .body { padding: 18px 20px 20px; display: grid; gap: 8px; align-content: start; }
+.card .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.card h3 { font-size: 19px; line-height: 1.25; }
+.card p { font-size: 14.5px; color: var(--muted); }
+
+/* ---------- detail pages ---------- */
+.crumbs { padding-block: 22px 0; }
+.crumbs a { text-decoration: none; color: var(--muted); font-size: 14px; display: inline-flex; align-items: center; gap: 6px; transition: color .2s var(--ease); }
+.crumbs a:hover { color: var(--fg); }
+.crumbs svg { width: 15px; height: 15px; transition: transform .2s var(--ease); }
+.crumbs a:hover svg { transform: translateX(-2px); }
+.detail { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; padding-block: 20px 72px; align-items: start; }
+.poster { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 84px); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 4 / 5; max-width: 100%; }
+.poster svg { display: block; width: 100%; height: 100%; }
+.poster .stamp {
+  position: absolute; left: 22px; bottom: 20px; right: 22px; display: flex; justify-content: space-between; align-items: end; gap: 12px;
+  color: #f1ece1; font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+}
+.poster .stamp b { display: block; font-family: var(--font-display); font-size: 30px; letter-spacing: -0.01em; text-transform: none; line-height: 1.05; font-weight: 600; margin-bottom: 6px; }
+.main-col { display: grid; gap: 28px; min-width: 0; }
+.main-col h1 { font-size: clamp(28px, 3vw, 38px); line-height: 1.12; margin-top: 10px; }
+.main-col .blurb { font-size: 17.5px; color: var(--muted); max-width: 58ch; }
+.facts-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+.facts-grid div { padding: 14px 16px; display: grid; gap: 2px; border-bottom: 1px solid var(--line); }
+.facts-grid div:nth-child(odd) { border-right: 1px solid var(--line); }
+.facts-grid div:nth-last-child(-n+2) { border-bottom: 0; }
+.facts-grid b { font-weight: 600; font-size: 15.5px; }
+.lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.lists ul { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 8px; }
+.lists li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; font-size: 15px; }
+.lists li svg { width: 16px; height: 16px; margin-top: 4px; color: var(--accent); }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; display: grid; gap: 18px; }
+.panel h2 { font-size: 20px; }
+.field { display: grid; gap: 6px; }
+.field > label, .field > .flabel { font-weight: 600; font-size: 14.5px; }
+.field input[type="text"], .field input[type="email"] {
+  border: 1px solid var(--line); background: var(--bg); border-radius: var(--r-sm); padding: 12px 14px; font-size: 16px;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+.field .err { color: var(--bad); font-size: 13.5px; }
+.seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.seg label {
+  display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; cursor: pointer;
+  font-weight: 500; transition: border-color .2s var(--ease), background .2s var(--ease);
+}
+.seg label:hover { border-color: var(--fg); }
+.seg input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+.seg label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.form-error { color: var(--bad); font-size: 14px; }
+.form-error:empty { display: none; }
+.spinner { width: 16px; height: 16px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--accent-ink) 40%, transparent); border-top-color: var(--accent-ink); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.onlist { display: grid; gap: 14px; }
+.onlist .row2 { display: flex; align-items: center; gap: 12px; }
+.onlist .tick { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); flex: none; }
+.onlist .tick svg { width: 18px; height: 18px; }
+.onlist .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ---------- RSVP pass ---------- */
+.passwrap { padding-block: 36px 72px; display: grid; gap: 26px; justify-items: start; }
+.passwrap h1 { font-size: clamp(26px, 3vw, 34px); }
+.pass {
+  width: min(100%, 460px); background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow); overflow: hidden; display: grid;
+  animation: printIn .55s var(--ease) both;
+}
+@keyframes printIn { from { opacity: 0; transform: translateY(-14px); clip-path: inset(0 0 100% 0); } to { opacity: 1; transform: none; clip-path: inset(0 0 0 0); } }
+.pass .p-top { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 14px; padding: 18px; align-items: center; }
+.pass .p-top .thumb { width: 76px; height: 76px; border-radius: var(--r-sm); overflow: hidden; }
+.pass .p-top .thumb svg { width: 100%; height: 100%; display: block; }
+.pass h3 { font-size: 19px; line-height: 1.25; }
+.pass .perf { position: relative; height: 18px; }
+.pass .perf::before { content: ""; position: absolute; left: 18px; right: 18px; top: 50%; border-top: 2px dashed var(--line); }
+.pass .perf::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 0 50%, var(--bg) 9px, transparent 9.5px), radial-gradient(circle at 100% 50%, var(--bg) 9px, transparent 9.5px); }
+.pass .p-bottom { display: grid; grid-template-columns: minmax(0, 1fr) 118px; gap: 16px; padding: 8px 18px 18px; align-items: center; }
+.pass dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 5px 12px; font-size: 14px; }
+.pass dt { color: var(--muted); }
+.pass dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.qr { width: 118px; height: 118px; background: #ffffff; border-radius: var(--r-sm); padding: 6px; }
+.qr svg { width: 100%; height: 100%; display: block; }
+.code { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .04em; }
+.empty-card { background: var(--surface); border: 1px dashed var(--line); border-radius: var(--r-lg); padding: 32px; display: grid; gap: 12px; justify-items: start; max-width: 560px; }
+
+/* ---------- guest list (owner only) ---------- */
+.guests { padding-block: 32px 72px; display: grid; gap: 24px; }
+.guests h1 { font-size: clamp(26px, 3vw, 34px); margin-top: 8px; }
+.tally { display: flex; flex-wrap: wrap; gap: 12px; }
+.tally div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 18px; display: grid; gap: 2px; min-width: 150px; }
+.tally b { font-family: var(--font-display); font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 620px; }
+th { text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+tbody tr { transition: background .2s var(--ease); }
+tbody tr:hover { background: var(--surface-2); }
+
+/* ---------- footer ---------- */
+.site-foot { border-top: 1px solid var(--line); }
+.site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); font-size: 14px; color: var(--muted); }
+.site-foot a { text-decoration: none; transition: color .2s var(--ease); }
+.site-foot a:hover { color: var(--fg); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .intro, .detail { grid-template-columns: minmax(0, 1fr); }
+  .intro { gap: 32px; padding-block: 36px 32px; }
+  .stub { transform: none; max-width: 540px; }
+  .poster { position: relative; top: 0; aspect-ratio: 16 / 10; }
+}
+@media (max-width: 640px) {
+  .site-head .wrap { gap: 10px; }
+  .nav a { padding: 8px 7px; font-size: 14px; }
+  .brand { gap: 8px; }
+  .brand svg { width: 30px; height: 30px; }
+  .brand b { font-size: 15px; }
+  .brand span { display: none; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .lists, .facts-grid, .seg { grid-template-columns: minmax(0, 1fr); }
+  .facts-grid div:nth-child(odd) { border-right: 0; }
+  .facts-grid div:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+  .stub { grid-template-columns: 96px minmax(0, 1fr); }
+  .pass .p-bottom { grid-template-columns: minmax(0, 1fr) 100px; }
+  .qr { width: 100px; height: 100px; }
+}
+@media (max-width: 400px) {
+  .nav a.hide-xs { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .stub { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="London Social Club, home">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="var(--accent)"/>
+        <circle cx="20" cy="20" r="14.5" fill="none" stroke="var(--accent-ink)" stroke-width="1" opacity=".55"/>
+        <text x="20" y="24.2" text-anchor="middle" font-family="Bricolage Grotesque, system-ui, sans-serif" font-size="11.5" font-weight="700" fill="var(--accent-ink)" letter-spacing=".5">LSC</text>
+      </svg>
+      <div><b>London Social Club</b><span>London, Ontario</span></div>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#" data-nav="home" class="hide-xs">Events</a>
+      <a href="#gala" data-nav="gala">Opening Gala</a>
+      <a href="#my-rsvp" data-nav="my-rsvp">My RSVP<span class="dot" id="rsvp-dot" hidden></span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="view" tabindex="-1"></main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>London Social Club · London, Ontario</span>
+    <span><a href="#gala">Opening Gala</a> · <a href="#">Events</a> · <a href="#my-rsvp">My RSVP</a></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ------------------------------------------------------------------
+     Content
+  ------------------------------------------------------------------ */
+  var GALA = {
+    id: "gala", title: "The Opening Gala", art: "fan", hue: "#16362a", ink: "#dcb978",
+    blurb: "One evening to open London Social Club: cocktails, dinner and dancing with the people who will make the club what it is. RSVP is free, and everyone on the list hears the date and location first.",
+    evening: ["Cocktails on arrival", "Dinner", "Live music and dancing"],
+    know: ["19+ with photo ID", "Up to one guest per RSVP", "Date and location sent to everyone on the list"]
+  };
+  var EVENTS = [
+    { id: "supper", cat: "Food & drink", title: "Seasonal supper club", art: "rings", hue: "#1f4d3a",
+      blurb: "Six shared courses at one long table, cooked from what Ontario farms are harvesting that week.",
+      incl: ["Six courses, served family style", "A welcome drink"], know: ["Vegetarian on request", "Wine pairing is 19+"] },
+    { id: "vinyl", cat: "Music", title: "Jazz on vinyl", art: "grooves", hue: "#3a2f4c",
+      blurb: "Classic jazz records played start to finish on a proper hi-fi, with a short talk before each side.",
+      incl: ["Three albums on a restored turntable", "Printed notes on each record"], know: ["Seated, first come", "Bar open, with non-alcoholic options"] },
+    { id: "pottery", cat: "Workshops", title: "Pottery wheel for beginners", art: "arcs", hue: "#8a5a22",
+      blurb: "Learn to centre clay and throw a simple bowl in a small group. Your best piece is fired and glazed for you.",
+      incl: ["All clay, tools and aprons", "Firing and glazing of one piece"], know: ["Small groups of twelve", "Ages 16 and up"] },
+    { id: "wine", cat: "Food & drink", title: "Niagara wine tasting", art: "waves", hue: "#6a2a2c",
+      blurb: "Six wines from small Niagara wineries, guided by a sommelier, with cheese to match each pour.",
+      incl: ["Six pours with tasting notes", "Cheese and bread"], know: ["19+ with ID", "Seated at small tables"] },
+    { id: "trivia", cat: "Games", title: "Club trivia", art: "dots", hue: "#2c4865",
+      blurb: "Six rounds of general knowledge, music and local London questions. Bring a team of up to four.",
+      incl: ["Six rounds plus a picture round", "A prize for the winning team"], know: ["Teams of up to four", "Solo players welcome"] },
+    { id: "run-club", cat: "Active", title: "Saturday run club", art: "stripes", hue: "#1f5a5a",
+      blurb: "An easy 5K loop along the river, then coffee back at the club. All paces are welcome.",
+      incl: ["Guided 5K route with two pace groups", "Coffee after the run"], know: ["Free for members", "Runs in light snow"] }
+  ];
+  var BY_ID = {}; EVENTS.forEach(function (e) { BY_ID[e.id] = e; });
+
+  /* ------------------------------------------------------------------
+     Helpers
+  ------------------------------------------------------------------ */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function hashStr(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function rng(seed) { var a = seed || 1; return function () { a = (a + 0x6D2B79F5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  var ICON = {
+    arrow: '<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    dot: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>'
+  };
+
+  /* Drawn covers, one per event, in a fixed 400 x 500 space; each box crops it. */
+  function cover(ev) {
+    var w = 400, h = 500, INK = ev.ink || "#efe9dc", r = rng(hashStr(ev.id)), s = "", cx = w / 2, cy = h / 2, i;
+    function c(x, y, rad, op, fill, sw) { return '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + rad.toFixed(1) + '" fill="' + (fill ? INK : "none") + '" stroke="' + (fill ? "none" : INK) + '" stroke-width="' + (sw || 1.5) + '" opacity="' + op + '"/>'; }
+    switch (ev.art) {
+      case "fan":
+        var ox = cx, oy = h * 0.86;
+        for (i = 0; i <= 24; i++) { var a = Math.PI + (i / 24) * Math.PI; s += '<path d="M' + ox + " " + oy + " L" + (ox + Math.cos(a) * 520).toFixed(1) + " " + (oy + Math.sin(a) * 520).toFixed(1) + '" stroke="' + INK + '" stroke-width="' + (i % 4 === 0 ? 2.2 : 1) + '" opacity="' + (i % 4 === 0 ? 0.75 : 0.3) + '"/>'; }
+        for (i = 1; i <= 6; i++) s += '<path d="M' + (ox - i * 52) + " " + oy + " A " + (i * 52) + " " + (i * 52) + " 0 0 1 " + (ox + i * 52) + " " + oy + '" fill="none" stroke="' + INK + '" stroke-width="' + (i === 2 ? 3 : 1.3) + '" opacity="' + (i === 2 ? 0.95 : 0.45) + '"/>';
+        s += '<path d="M' + (ox - 52) + " " + oy + " A 52 52 0 0 1 " + (ox + 52) + " " + oy + ' Z" fill="' + INK + '" opacity=".9"/>';
+        s += '<path d="M' + cx + ' 62 l9 9 -9 9 -9 -9 Z" fill="' + INK + '" opacity=".95"/>';
+        break;
+      case "rings":
+        for (i = 0; i < 9; i++) s += c(cx, cy * 0.92, 28 + i * 18, (0.85 - i * 0.08).toFixed(2), false, i % 3 === 0 ? 3 : 1.4);
+        for (i = 0; i < 6; i++) { var b = i / 6 * Math.PI * 2 + 0.3; s += c(cx + Math.cos(b) * 168, cy * 0.92 + Math.sin(b) * 168, 14, 0.55, true); }
+        break;
+      case "grooves":
+        for (i = 0; i < 26; i++) s += c(cx, cy, 30 + i * 6.4, (0.25 + r() * 0.5).toFixed(2), false, 1);
+        s += c(cx, cy, 30, 0.9, true) + '<circle cx="' + cx + '" cy="' + cy + '" r="4" fill="' + ev.hue + '"/>';
+        s += '<path d="M' + (w - 70) + ' 70 L' + (cx + 70) + ' ' + (cy - 40) + '" stroke="' + INK + '" stroke-width="5" stroke-linecap="round" opacity=".85"/>';
+        break;
+      case "stripes":
+        for (i = -8; i < 14; i++) s += '<path d="M' + (i * 40) + ' ' + h + ' L' + (i * 40 + h * 0.6) + ' 0" stroke="' + INK + '" stroke-width="' + (i % 4 === 0 ? 10 : 3) + '" opacity="' + (i % 4 === 0 ? 0.75 : 0.28) + '"/>';
+        s += '<rect x="' + (cx - 120) + '" y="' + (cy - 70) + '" width="240" height="140" rx="70" fill="none" stroke="' + INK + '" stroke-width="3" opacity=".9"/>';
+        break;
+      case "arcs":
+        for (i = 0; i < 8; i++) { var rw = 60 + i * 20, top = 150 + i * 6; s += '<path d="M' + (cx - rw) + ' ' + top + ' C ' + (cx - rw) + ' ' + (top + 230) + ', ' + (cx + rw) + ' ' + (top + 230) + ', ' + (cx + rw) + ' ' + top + '" fill="none" stroke="' + INK + '" stroke-width="' + (i === 0 ? 3 : 1.5) + '" opacity="' + (0.9 - i * 0.09).toFixed(2) + '"/>'; }
+        s += '<ellipse cx="' + cx + '" cy="150" rx="60" ry="12" fill="none" stroke="' + INK + '" stroke-width="2.5" opacity=".9"/>';
+        break;
+      case "dots":
+        for (i = 0; i < 9; i++) for (var j = 0; j < 11; j++) { var on = r() > 0.62; s += c(40 + i * 40, 50 + j * 40, on ? 9 : 4, on ? 0.9 : 0.35, true); }
+        break;
+      case "waves":
+        for (i = 0; i < 14; i++) { var y = 60 + i * 30, d = "M0 " + y; for (var x = 0; x <= w; x += 20) d += " L" + x + " " + (y + Math.sin(x / 38 + i * 0.6) * (10 + i)).toFixed(1); s += '<path d="' + d + '" fill="none" stroke="' + INK + '" stroke-width="' + (i % 5 === 0 ? 3 : 1.4) + '" opacity="' + (0.25 + (i % 5 === 0 ? 0.6 : r() * 0.35)).toFixed(2) + '"/>'; }
+        break;
+    }
+    return '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="xMidYMid slice" role="img" aria-label="' + esc(ev.title) + ' cover"><rect width="' + w + '" height="' + h + '" fill="' + ev.hue + '"/>' + s + '</svg>';
+  }
+
+  function qrSvg(text) {
+    if (typeof window.qrcode !== "function") return '<div class="code" style="color:#16211b;display:grid;place-items:center;height:100%;text-align:center">' + esc(text) + '</div>';
+    var q = window.qrcode(0, "M"); q.addData(text); q.make();
+    var n = q.getModuleCount(), m = 2, d = "";
+    for (var rr = 0; rr < n; rr++) for (var cc = 0; cc < n; cc++) if (q.isDark(rr, cc)) d += "M" + (cc + m) + " " + (rr + m) + "h1v1h-1z";
+    return '<svg viewBox="0 0 ' + (n + 2 * m) + " " + (n + 2 * m) + '" shape-rendering="crispEdges" aria-label="RSVP QR code"><rect width="100%" height="100%" fill="#ffffff"/><path d="' + d + '" fill="#111111"/></svg>';
+  }
+  /* ------------------------------------------------------------------
+     RSVP storage: sent to the club's guest list (Supabase). The public
+     page can only add or update an RSVP by email; it can never read the
+     list. A copy of this visitor's own RSVP stays in this browser so the
+     pass shows on the next visit.
+  ------------------------------------------------------------------ */
+  var RSVP_URL = "https://qrlpgeawupkbghdghlfn.supabase.co/rest/v1/rpc/lsc_rsvp";
+  var PUBLIC_KEY = "sb_publishable_be5xzDvmfLOgSJOHgTiteg_sXoh1Bnq";
+  var LOCAL = "lsc-rsvp-v1";
+  var myRsvp = null;
+  try { var cached = localStorage.getItem(LOCAL); if (cached) myRsvp = JSON.parse(cached); } catch (e) { /* none */ }
+  function keepLocal() { try { if (myRsvp) localStorage.setItem(LOCAL, JSON.stringify(myRsvp)); else localStorage.removeItem(LOCAL); } catch (e) { /* ignore */ } }
+  async function sendRsvp(r) {
+    var res = await fetch(RSVP_URL, {
+      method: "POST",
+      headers: { "apikey": PUBLIC_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ p_name: r.name, p_email: r.email, p_party: r.party, p_guest_name: r.guestName || "" })
+    });
+    var body = await res.json().catch(function () { return null; });
+    if (!res.ok || typeof body !== "string") throw new Error((body && body.message) || "rsvp failed");
+    return body; // the pass code
+  }
+
+  var view = $("view");
+  var editing = false;
+
+  /* ------------------------------------------------------------------
+     Views
+  ------------------------------------------------------------------ */
+  function setNav(name) {
+    document.querySelectorAll("[data-nav]").forEach(function (a) {
+      if (a.getAttribute("data-nav") === name) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    $("rsvp-dot").hidden = !myRsvp;
+  }
+
+  function renderHome() {
+    setNav("home");
+    view.innerHTML =
+      '<section class="view">' +
+      '<div class="wrap intro">' +
+        '<div>' +
+          '<p class="label">London, Ontario · Opening soon</p>' +
+          '<h1>Supper clubs, workshops, listening nights and morning runs, all under one club.</h1>' +
+          '<p class="lead">Our first season starts with the Opening Gala. RSVP now and you will be among the first to hear the date and location.</p>' +
+          '<div class="actions"><a class="btn btn-primary" href="#gala">RSVP to the gala ' + ICON.arrow + '</a><button type="button" class="btn btn-ghost" id="to-soon">See what is coming</button></div>' +
+        '</div>' +
+        '<a class="stub" href="#gala" aria-label="The Opening Gala, RSVP open">' +
+          '<div class="art">' + cover(GALA) + '</div>' +
+          '<div class="body">' +
+            '<span class="label">The first event</span>' +
+            '<h2>' + esc(GALA.title) + '</h2>' +
+            '<div class="facts-mini"><span>Date to be announced</span><span>Location to be determined</span></div>' +
+            '<div class="foot"><span class="status open">RSVP open</span><span class="go">' + (myRsvp ? "View your RSVP " : "RSVP ") + ICON.arrow + '</span></div>' +
+          '</div>' +
+        '</a>' +
+      '</div>' +
+      '<div class="wrap programme" id="coming-soon">' +
+        '<div class="prog-head"><h2>Coming soon</h2><p class="muted small">Dates and tickets will be posted here first.</p></div>' +
+        '<div class="cards">' + EVENTS.map(function (e) {
+          return '<a class="card" href="#event-' + e.id + '">' +
+            '<div class="art">' + cover(e) + '</div>' +
+            '<div class="body"><div class="top"><span class="label">' + esc(e.cat) + '</span><span class="status soon">Coming soon</span></div>' +
+            '<h3>' + esc(e.title) + '</h3><p>' + esc(e.blurb) + '</p></div>' +
+          '</a>';
+        }).join("") + '</div>' +
+      '</div>' +
+      '</section>';
+    $("to-soon").addEventListener("click", function () { $("coming-soon").scrollIntoView({ behavior: "smooth", block: "start" }); });
+  }
+
+  function renderEvent(id) {
+    var ev = BY_ID[id];
+    if (!ev) { location.hash = ""; return; }
+    setNav("home");
+    view.innerHTML =
+      '<section class="view">' +
+      '<div class="wrap crumbs"><a href="#">' + ICON.back + 'All events</a></div>' +
+      '<div class="wrap detail">' +
+        '<div class="poster">' + cover(ev) + '<div class="stamp"><div><b>Coming soon</b>' + esc(ev.cat) + '</div></div></div>' +
+        '<div class="main-col">' +
+          '<div><p class="label">' + esc(ev.cat) + ' · <span class="status soon">Coming soon</span></p><h1>' + esc(ev.title) + '</h1></div>' +
+          '<p class="blurb">' + esc(ev.blurb) + '</p>' +
+          '<div class="facts-grid">' +
+            '<div><span class="label">Date</span><b>To be announced</b></div>' +
+            '<div><span class="label">Location</span><b>To be announced</b></div>' +
+            '<div><span class="label">Tickets</span><b>On sale soon</b></div>' +
+            '<div><span class="label">Type</span><b>' + esc(ev.cat) + '</b></div>' +
+          '</div>' +
+          '<div class="panel">' +
+            '<h2>Tickets are not on sale yet</h2>' +
+            '<p class="muted">We will post the date and open tickets here. People on the Opening Gala list hear about every event first.</p>' +
+            '<a class="btn btn-primary" href="#gala" style="justify-self:start">RSVP to the Opening Gala ' + ICON.arrow + '</a>' +
+          '</div>' +
+          '<div class="lists">' +
+            '<div><p class="label">Included</p><ul>' + ev.incl.map(function (x) { return '<li>' + ICON.check + '<span>' + esc(x) + '</span></li>'; }).join("") + '</ul></div>' +
+            '<div><p class="label">Good to know</p><ul>' + ev.know.map(function (x) { return '<li>' + ICON.dot + '<span>' + esc(x) + '</span></li>'; }).join("") + '</ul></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '</section>';
+  }
+
+  function rsvpFormHtml() {
+    var v = myRsvp || {};
+    var plus = v.party === 2;
+    return '<form class="panel" id="rsvp-form" novalidate>' +
+      '<div><p class="label">RSVP</p><h2 style="margin-top:6px">' + (myRsvp ? "Change your RSVP" : "Save your spot") + '</h2></div>' +
+      '<div class="field"><label for="rsvp-name">Full name</label><input type="text" id="rsvp-name" autocomplete="name" value="' + esc(v.name || "") + '"><span class="err" id="name-err"></span></div>' +
+      '<div class="field"><label for="rsvp-email">Email</label><input type="email" id="rsvp-email" autocomplete="email" inputmode="email" value="' + esc(v.email || "") + '"><span class="err" id="email-err"></span></div>' +
+      '<div class="field"><span class="flabel" id="party-label">Who is coming</span><div class="seg" role="radiogroup" aria-labelledby="party-label">' +
+        '<label><input type="radio" name="party" id="rsvp-party-1" value="1"' + (plus ? "" : " checked") + '>Just me</label>' +
+        '<label><input type="radio" name="party" id="rsvp-party-2" value="2"' + (plus ? " checked" : "") + '>Me plus one</label>' +
+      '</div></div>' +
+      '<div class="field" id="guest-field"' + (plus ? "" : " hidden") + '><label for="rsvp-guest">Guest\'s name</label><input type="text" id="rsvp-guest" autocomplete="off" value="' + esc(v.guestName || "") + '"><span class="err" id="guest-err"></span></div>' +
+      '<p class="form-error" id="form-err" role="alert"></p>' +
+      '<button type="submit" class="btn btn-primary btn-block" id="rsvp-btn">' + (myRsvp ? "Update RSVP" : "RSVP") + '</button>' +
+      '<p class="small muted">Free to attend. We will email the date and location to you before anyone else.</p>' +
+    '</form>';
+  }
+
+  function renderGala() {
+    setNav("gala");
+    var panel = (myRsvp && !editing) ?
+      '<div class="panel onlist">' +
+        '<div class="row2"><span class="tick">' + ICON.check + '</span><div><b>You are on the list</b><div class="small muted">' + esc(myRsvp.name) + (myRsvp.party === 2 ? " plus " + esc(myRsvp.guestName || "one guest") : "") + '</div></div></div>' +
+        '<div class="btns"><a class="btn btn-primary" href="#my-rsvp">View your RSVP ' + ICON.arrow + '</a><button type="button" class="btn btn-ghost" id="change-rsvp">Change RSVP</button></div>' +
+      '</div>' : rsvpFormHtml();
+    view.innerHTML =
+      '<section class="view">' +
+      '<div class="wrap crumbs"><a href="#">' + ICON.back + 'Home</a></div>' +
+      '<div class="wrap detail">' +
+        '<div class="poster">' + cover(GALA) + '<div class="stamp"><div><b>The Opening Gala</b>London Social Club</div><div style="text-align:right">RSVP open</div></div></div>' +
+        '<div class="main-col">' +
+          '<div><p class="label">The first event · <span class="status open">RSVP open</span></p><h1>' + esc(GALA.title) + '</h1></div>' +
+          '<p class="blurb">' + esc(GALA.blurb) + '</p>' +
+          '<div class="facts-grid">' +
+            '<div><span class="label">Date</span><b>To be announced</b></div>' +
+            '<div><span class="label">Location</span><b>To be determined</b></div>' +
+            '<div><span class="label">Dress</span><b>Black tie optional</b></div>' +
+            '<div><span class="label">Cost</span><b>Free with RSVP</b></div>' +
+          '</div>' +
+          '<div id="rsvp-slot">' + panel + '</div>' +
+          '<div class="lists">' +
+            '<div><p class="label">The evening</p><ul>' + GALA.evening.map(function (x) { return '<li>' + ICON.check + '<span>' + esc(x) + '</span></li>'; }).join("") + '</ul></div>' +
+            '<div><p class="label">Good to know</p><ul>' + GALA.know.map(function (x) { return '<li>' + ICON.dot + '<span>' + esc(x) + '</span></li>'; }).join("") + '</ul></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '</section>';
+
+    var ch = $("change-rsvp");
+    if (ch) ch.addEventListener("click", function () { editing = true; renderGala(); $("rsvp-name").focus(); });
+    var form = $("rsvp-form");
+    if (!form) return;
+    form.querySelectorAll('input[name="party"]').forEach(function (rb) {
+      rb.addEventListener("change", function () { $("guest-field").hidden = !$("rsvp-party-2").checked; });
+    });
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var name = $("rsvp-name").value.trim(), email = $("rsvp-email").value.trim();
+      var party = $("rsvp-party-2").checked ? 2 : 1, guest = party === 2 ? $("rsvp-guest").value.trim() : "";
+      var ok = true;
+      ["name-err", "email-err", "guest-err", "form-err"].forEach(function (id) { $(id).textContent = ""; });
+      if (name.length < 2) { $("name-err").textContent = "Enter your full name."; ok = false; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { $("email-err").textContent = "Enter a valid email. This is where we send the date and location."; ok = false; }
+      if (party === 2 && guest.length < 2) { $("guest-err").textContent = "Enter your guest's name."; ok = false; }
+      if (!ok) { (name.length < 2 ? $("rsvp-name") : $("rsvp-email")).focus(); return; }
+
+      var btn = $("rsvp-btn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" aria-hidden="true"></span>Saving your RSVP';
+      var record = {
+        name: name.slice(0, 120), email: email.slice(0, 200), party: party, guestName: guest.slice(0, 120),
+        createdAt: (myRsvp && myRsvp.createdAt) || Date.now(), updatedAt: Date.now()
+      };
+      try {
+        record.code = await sendRsvp(record);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = myRsvp ? "Update RSVP" : "RSVP";
+        $("form-err").textContent = "We could not save your RSVP just now. Please try again in a moment.";
+        return;
+      }
+      myRsvp = record; keepLocal(); editing = false;
+      location.hash = "my-rsvp";
+    });
+  }
+
+  function renderMyRsvp() {
+    setNav("my-rsvp");
+    if (!myRsvp) {
+      view.innerHTML = '<section class="view"><div class="wrap passwrap"><h1>My RSVP</h1>' +
+        '<div class="empty-card"><p class="label">No RSVP yet</p><h2 style="font-size:22px">The Opening Gala list is open.</h2><p class="muted">RSVP in under a minute. Your pass shows up here, and we email you the date and location first.</p><a class="btn btn-primary" href="#gala">RSVP to the gala ' + ICON.arrow + '</a></div>' +
+        '</div></section>';
+      return;
+    }
+    var r = myRsvp;
+    view.innerHTML =
+      '<section class="view"><div class="wrap passwrap">' +
+        '<div style="display:grid;gap:8px"><p class="label">My RSVP</p><h1>You are on the list for the Opening Gala.</h1>' +
+        '<p class="muted">We will email the date and location to ' + esc(r.email) + '. Bring this pass on your phone.</p></div>' +
+        '<article class="pass">' +
+          '<div class="p-top"><div class="thumb">' + cover(GALA) + '</div><div><p class="label">RSVP confirmed</p><h3>' + esc(GALA.title) + '</h3><div class="small muted">London Social Club</div></div></div>' +
+          '<div class="perf" aria-hidden="true"></div>' +
+          '<div class="p-bottom"><dl>' +
+            '<dt>Name</dt><dd>' + esc(r.name) + '</dd>' +
+            '<dt>Party</dt><dd>' + (r.party === 2 ? "2, with " + esc(r.guestName) : "1") + '</dd>' +
+            '<dt>Date</dt><dd>To be announced</dd>' +
+            '<dt>Location</dt><dd>To be determined</dd>' +
+            '<dt>Pass</dt><dd class="code">' + esc(r.code) + '</dd>' +
+          '</dl><div class="qr">' + qrSvg("LSC|GALA|" + r.code) + '</div></div>' +
+        '</article>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn btn-ghost" href="#gala">Change RSVP</a><a class="btn btn-primary" href="#">See what is coming ' + ICON.arrow + '</a></div>' +
+      '</div></section>';
+  }
+
+  /* ------------------------------------------------------------------
+     Router
+  ------------------------------------------------------------------ */
+  var lastRoute = null;
+  function route() {
+    var h = (location.hash || "").replace(/^#/, "");
+    var changed = h !== lastRoute;
+    lastRoute = h;
+    if (h !== "gala") editing = false;
+    if (!h) renderHome();
+    else if (h.indexOf("event-") === 0) renderEvent(h.slice(6));
+    else if (h === "gala") renderGala();
+    else if (h === "my-rsvp") renderMyRsvp();
+    else renderHome();
+    if (changed) window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  route();
+})();
+</script>
+</body>
+</html>
